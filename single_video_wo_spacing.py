@@ -1,5 +1,4 @@
 from youtube_transcript_api import YouTubeTranscriptApi
-from pykospacing import Spacing
 import time
 from xlwt import Workbook
 
@@ -18,13 +17,6 @@ text = ""
 # iterate over all available transcripts
 for transcript in transcript_list:
     text += transcript['text']
-
-text_wo_space = text.replace(" ", "")
-
-print(text_wo_space, "\n\n")
-
-spacing = Spacing()
-text = spacing(text_wo_space)
 
 print(text)
 sheet1.write(1, 0, text)
