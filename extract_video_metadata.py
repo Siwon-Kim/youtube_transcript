@@ -68,5 +68,5 @@ def collect_video_metadata(channel_id, channel_name):
 
 collect_video_metadata(official_news_channel_ids[8], official_news_channel_names[8]) # 0-8
 
-insert_news_batch_metadata(video_data_list)
+insert_news_video_batch_metadata(video_data_list)
 

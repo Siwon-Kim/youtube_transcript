@@ -4,10 +4,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from manage_CommentsDB import *
+from manage_NewsDB import get_video_ids
 
 API_KEY = os.getenv('API_KEY')
 
-MAX_COUNT_PER_PAGE = 200
+MAX_COUNT_PER_PAGE = 100
 comment_data_list = []
 
 def collect_comments(video_id):
@@ -35,8 +36,6 @@ def collect_comments(video_id):
 
                 comments_metadata = result['items']
                 for comment in comments_metadata:
-                    if comment['snippet']['totalReplyCount'] > 0:
-                        print(comment)
                     comment_id = comment['id']
                     comment_detail = comment['snippet']['topLevelComment']['snippet']
                     text_display = comment_detail['textDisplay']
@@ -64,7 +63,7 @@ def collect_comments(video_id):
 
                 # Break the loop if there are no more pages
                 if not next_page_token:
-                    print(page_counter, "no pages!!")
+                    print(page_counter, "pages!!")
                     break
 
             except Exception as e:
@@ -73,5 +72,13 @@ def collect_comments(video_id):
         else:
             print(f"Error: {response.status_code} - {response.text}")
 
+def main():
+    video_ids = get_video_ids()
+    for video_id in video_ids[0:500]:
+        collect_comments(video_id)
+        insert_news_comment_batch_metadata(comment_data_list)
+        print("Completed!", len(comment_data_list))
+        comment_data_list.clear()
 
-collect_comments('cHOB3N-s45o')
+if __name__ == "__main__":
+    main()
